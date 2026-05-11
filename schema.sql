@@ -107,22 +107,27 @@ CREATE TABLE IF NOT EXISTS contact_messages (
 -- ─── ROW LEVEL SECURITY ───────────────────────────────────────────────────────
 
 ALTER TABLE listings ENABLE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS "Public can view active listings" ON listings;
 CREATE POLICY "Public can view active listings"
   ON listings FOR SELECT USING (status = 'active');
 
 ALTER TABLE leads ENABLE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS "Public can submit leads" ON leads;
 CREATE POLICY "Public can submit leads"
   ON leads FOR INSERT WITH CHECK (true);
 
 ALTER TABLE aircraft_submissions ENABLE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS "Public can submit aircraft" ON aircraft_submissions;
 CREATE POLICY "Public can submit aircraft"
   ON aircraft_submissions FOR INSERT WITH CHECK (true);
 
 ALTER TABLE valuation_requests ENABLE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS "Public can submit valuation requests" ON valuation_requests;
 CREATE POLICY "Public can submit valuation requests"
   ON valuation_requests FOR INSERT WITH CHECK (true);
 
 ALTER TABLE contact_messages ENABLE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS "Public can submit contact messages" ON contact_messages;
 CREATE POLICY "Public can submit contact messages"
   ON contact_messages FOR INSERT WITH CHECK (true);
 
