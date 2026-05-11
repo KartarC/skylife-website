@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -366,13 +366,13 @@ footer { background: #06101d; padding: 60px 80px 32px; border-top: 0.5px solid v
 <body>
 
 <div id="site-header"></div>
-<script>fetch("header.html").then(r=>r.text()).then(h=>{document.getElementById("site-header").outerHTML=h;initMobileMenu();});</script>
+<script>fetch("/header.html").then(r=>r.text()).then(h=>{document.getElementById("site-header").outerHTML=h;initMobileMenu();});</script>
 
 <!-- content injected by JS after Supabase fetch -->
 <div id="page-content"></div>
 
 <div id="site-footer"></div>
-<script>fetch("footer.html").then(r=>r.text()).then(h=>{document.getElementById("site-footer").outerHTML=h;});</script>
+<script>fetch("/footer.html").then(r=>r.text()).then(h=>{document.getElementById("site-footer").outerHTML=h;});</script>
 
 <div class="mobile-overlay" id="mobileOverlay" onclick="closeMobileMenu()"></div>
 
@@ -436,7 +436,7 @@ function renderPage(a) {
   return `
     <!-- Breadcrumb -->
     <div class="breadcrumb fade-up">
-      <a href="listings.html">← All Listings</a>
+      <a href="/listings">← All Listings</a>
       <span class="breadcrumb-sep">/</span>
       <span>${a.make} ${a.model}</span>
     </div>
@@ -556,7 +556,7 @@ async function submitInquiry(e) {
   const content = document.getElementById('page-content');
 
   if (!id) {
-    content.innerHTML = `<div class="not-found"><h2>No listing specified</h2><p>Return to <a href="listings.html" style="color:var(--teal)">all listings</a>.</p></div>`;
+    content.innerHTML = `<div class="not-found"><h2>No listing specified</h2><p>Return to <a href="/listings" style="color:var(--teal)">all listings</a>.</p></div>`;
     return;
   }
 
@@ -567,7 +567,7 @@ async function submitInquiry(e) {
     .single();
 
   if (error || !data) {
-    content.innerHTML = `<div class="not-found"><h2>Listing not found</h2><p>This aircraft may have been sold or removed. <a href="listings.html" style="color:var(--teal)">Browse all listings →</a></p></div>`;
+    content.innerHTML = `<div class="not-found"><h2>Listing not found</h2><p>This aircraft may have been sold or removed. <a href="/listings" style="color:var(--teal)">Browse all listings →</a></p></div>`;
     return;
   }
 

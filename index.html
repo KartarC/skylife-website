@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -970,7 +970,7 @@ footer {
   <ul class="nav-links">
     <li><a href="#">Buy</a></li>
     <li><a href="#">Sell</a></li>
-    <li><a href="listings.html">Listings</a></li>
+    <li><a href="/listings">Listings</a></li>
     <li><a href="#">Services</a></li>
     <li><a href="#">About</a></li>
     <li><a href="#" class="nav-cta">List Aircraft</a></li>
@@ -986,7 +986,7 @@ footer {
   <ul>
     <li><a href="#" onclick="closeMobileMenu()">Buy</a></li>
     <li><a href="#" onclick="closeMobileMenu()">Sell</a></li>
-    <li><a href="listings.html" onclick="closeMobileMenu()">Listings</a></li>
+    <li><a href="/listings" onclick="closeMobileMenu()">Listings</a></li>
     <li><a href="#" onclick="closeMobileMenu()">Services</a></li>
     <li><a href="#" onclick="closeMobileMenu()">About</a></li>
     <li><a href="#" class="mobile-cta" onclick="closeMobileMenu()">List Aircraft</a></li>
@@ -1107,7 +1107,7 @@ footer {
       <div class="section-eyebrow">Available Now</div>
       <h2 class="section-title">Featured <em>Aircraft</em></h2>
     </div>
-    <a href="listings.html" class="see-all">View all listings →</a>
+    <a href="/listings" class="see-all">View all listings →</a>
   </div>
 
   <!-- Filter bar -->
@@ -1201,7 +1201,7 @@ footer {
     <div class="footer-col">
       <h4>Buy</h4>
       <ul>
-        <li><a href="listings.html">Browse All Listings</a></li>
+        <li><a href="/listings">Browse All Listings</a></li>
         <li><a href="#">Piston Aircraft</a></li>
         <li><a href="#">Turboprops</a></li>
         <li><a href="#">Light Jets</a></li>
@@ -1296,7 +1296,7 @@ function renderCard(aircraft, classes = '') {
         <div class="card-specs">${specHtml}</div>
         <div class="card-footer">
           <div><div class="card-price">${formatPrice(aircraft.price)}</div></div>
-          <a class="card-btn" href="listing.html?id=${aircraft.id}">View Details</a>
+          <a class="card-btn" href="/listing?id=${aircraft.id}">View Details</a>
         </div>
       </div>
     </div>`;

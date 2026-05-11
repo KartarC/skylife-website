@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -285,7 +285,7 @@ footer { background: #06101d; padding: 60px 80px 32px; border-top: 0.5px solid v
 <body>
 
 <div id="site-header"></div>
-<script>fetch("header.html").then(r=>r.text()).then(h=>{document.getElementById("site-header").outerHTML=h;initMobileMenu();});</script>
+<script>fetch("/header.html").then(r=>r.text()).then(h=>{document.getElementById("site-header").outerHTML=h;initMobileMenu();});</script>
 
 <!-- Page Hero -->
 <section class="page-hero">
@@ -353,7 +353,7 @@ footer { background: #06101d; padding: 60px 80px 32px; border-top: 0.5px solid v
   <div id="listings-loading" class="state-msg">Loading aircraft&hellip;</div>
   <div id="listings-empty" class="state-msg" style="display:none;">
     <span>No aircraft found</span>
-    Try adjusting your filters or <a href="listings.html" style="color:var(--teal)">view all</a>
+    Try adjusting your filters or <a href="/listings" style="color:var(--teal)">view all</a>
   </div>
   <div class="listings-grid-full" id="listings-grid" style="display:none;"></div>
 
@@ -363,7 +363,7 @@ footer { background: #06101d; padding: 60px 80px 32px; border-top: 0.5px solid v
 </section>
 
 <div id="site-footer"></div>
-<script>fetch("footer.html").then(r=>r.text()).then(h=>{document.getElementById("site-footer").outerHTML=h;});</script>
+<script>fetch("/footer.html").then(r=>r.text()).then(h=>{document.getElementById("site-footer").outerHTML=h;});</script>
 
 <!-- Mobile menu overlay -->
 <div class="mobile-overlay" id="mobileOverlay" onclick="closeMobileMenu()"></div>
@@ -406,7 +406,7 @@ function renderCard(a, delay) {
   const subtitle = [a.location, a.total_time ? a.total_time.toLocaleString()+' TT' : '', specs.avionics || ''].filter(Boolean).join(' · ');
 
   return `
-    <div class="aircraft-card fade-up ${delay}" onclick="window.location='listing.html?id=${a.id}'">
+    <div class="aircraft-card fade-up ${delay}" onclick="window.location='/listing?id=${a.id}'">
       <div class="card-img bg-slate">
         ${badge}
         <div class="card-img-inner">${svg}</div>
@@ -418,7 +418,7 @@ function renderCard(a, delay) {
         <div class="card-specs">${specHtml}</div>
         <div class="card-footer">
           <div><div class="card-price">${formatPrice(a.price)}</div></div>
-          <a class="card-btn" href="listing.html?id=${a.id}">View Details</a>
+          <a class="card-btn" href="/listing?id=${a.id}">View Details</a>
         </div>
       </div>
     </div>`;
