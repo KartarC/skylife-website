@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>All Listings — SkyLife Aircrafts</title>
+<meta name="description" content="Browse all available private aircraft for sale at SkyLife Aircrafts. Pistons, turboprops, and jets across Canada.">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy: #0a1628;
+  --navy2: #0f1f38;
+  --navy3: #162847;
+  --teal: #3ecfb2;
+  --teal2: #2ab09a;
+  --teal3: #1a8070;
+  --mint: #a8f0e6;
+  --white: #f5f7fa;
+  --muted: rgba(245,247,250,0.55);
+  --border: rgba(62,207,178,0.18);
+  --font-display: 'Cormorant Garamond', Georgia, serif;
+  --font-body: 'DM Sans', sans-serif;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--navy);
+  color: var(--white);
+  font-family: var(--font-body);
+  font-size: 15px;
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.5;
+}
+
+/* ─── NAV (from header partial) ─── */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  padding: 0 48px;
+  height: 160px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #ffffff;
+  border-bottom: 1px solid rgba(62,207,178,0.3);
+}
+.nav-logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+.logo-img { height: 144px; width: auto; border-radius: 4px; }
+.nav-brand { font-family: var(--font-display); font-size: 22px; font-weight: 600; letter-spacing: 0.5px; color: var(--navy); line-height: 1; }
+.nav-brand span { color: var(--teal2); }
+.nav-links { display: flex; align-items: center; gap: 36px; list-style: none; }
+.nav-links a { font-size: 16px; font-weight: 500; letter-spacing: 1px; text-transform: uppercase; color: var(--navy); text-decoration: none; transition: color 0.2s; }
+.nav-links a:hover, .nav-links a.active { color: var(--teal2); }
+.nav-cta { background: transparent; border: 1.5px solid var(--teal2); color: var(--teal2) !important; padding: 12px 30px; border-radius: 2px; font-size: 15px !important; letter-spacing: 1.5px !important; cursor: pointer; transition: all 0.2s !important; }
+.nav-cta:hover { background: var(--teal2) !important; color: white !important; }
+.hamburger { display: none; flex-direction: column; gap: 5px; background: none; border: none; cursor: pointer; padding: 8px; z-index: 200; }
+.hamburger span { display: block; width: 26px; height: 2px; background: var(--navy); border-radius: 2px; transition: all 0.3s; }
+.hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.hamburger.open span:nth-child(2) { opacity: 0; }
+.hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+.mobile-menu { display: none; position: fixed; top: 0; right: -100%; width: 80%; max-width: 320px; height: 100vh; background: #ffffff; z-index: 300; padding: 100px 36px 48px; transition: right 0.35s cubic-bezier(0.25,0.8,0.25,1); box-shadow: -4px 0 40px rgba(0,0,0,0.12); }
+.mobile-menu.open { right: 0; }
+.mobile-menu ul { list-style: none; }
+.mobile-menu li { border-bottom: 0.5px solid rgba(10,22,40,0.08); }
+.mobile-menu a { display: block; padding: 18px 0; font-size: 17px; font-weight: 500; letter-spacing: 0.5px; color: var(--navy); text-decoration: none; text-transform: uppercase; transition: color 0.2s; }
+.mobile-menu a:hover { color: var(--teal2); }
+.mobile-cta { display: inline-block !important; margin-top: 28px; padding: 14px 32px !important; border: 1.5px solid var(--teal2) !important; color: var(--teal2) !important; border-radius: 2px; text-align: center; width: 100%; }
+.mobile-close { position: absolute; top: 28px; right: 28px; background: none; border: none; font-size: 22px; color: var(--navy); cursor: pointer; line-height: 1; }
+.mobile-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 299; backdrop-filter: blur(2px); }
+.mobile-overlay.open, .mobile-menu.open { display: block; }
+
+/* ─── FOOTER ─── */
+footer { background: #06101d; padding: 60px 80px 32px; border-top: 0.5px solid var(--border); }
+.footer-top { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 48px; margin-bottom: 48px; }
+.footer-brand { font-family: var(--font-display); font-size: 28px; font-weight: 300; margin-bottom: 12px; }
+.footer-brand span { color: var(--teal); }
+.footer-desc { font-size: 13px; color: var(--muted); line-height: 1.8; max-width: 280px; }
+.footer-col h4 { font-size: 10px; letter-spacing: 2.5px; text-transform: uppercase; color: var(--teal); margin-bottom: 20px; }
+.footer-col ul { list-style: none; }
+.footer-col li { margin-bottom: 10px; }
+.footer-col a { color: var(--muted); text-decoration: none; font-size: 13px; transition: color 0.2s; }
+.footer-col a:hover { color: var(--teal); }
+.footer-bottom { border-top: 0.5px solid var(--border); padding-top: 24px; display: flex; justify-content: space-between; align-items: center; }
+.footer-copy { font-size: 12px; color: var(--muted); }
+.footer-legal { display: flex; gap: 24px; }
+.footer-legal a { font-size: 12px; color: var(--muted); text-decoration: none; }
+
+/* ─── PAGE HERO ─── */
+.page-hero {
+  position: relative;
+  padding: 220px 80px 70px;
+  background: linear-gradient(160deg, #0d1e36 0%, #0a1628 50%, #07111e 100%);
+  overflow: hidden;
+  border-bottom: 0.5px solid var(--border);
+  z-index: 1;
+}
+.page-hero-grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(62,207,178,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(62,207,178,0.04) 1px, transparent 1px);
+  background-size: 80px 80px;
+  mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 20%, transparent 80%);
+}
+.page-hero-orb {
+  position: absolute;
+  width: 500px; height: 500px;
+  right: -80px; top: 50%;
+  transform: translateY(-50%);
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(62,207,178,0.1) 0%, transparent 70%);
+  filter: blur(50px);
+}
+.page-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 11px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--teal);
+  margin-bottom: 20px;
+}
+.page-eyebrow::before { content: ''; width: 32px; height: 1px; background: var(--teal); }
+.page-title {
+  font-family: var(--font-display);
+  font-size: clamp(44px, 5vw, 72px);
+  font-weight: 300;
+  line-height: 1.05;
+  letter-spacing: -0.5px;
+  margin-bottom: 16px;
+}
+.page-title em { font-style: italic; color: var(--teal); }
+.page-sub { font-size: 16px; color: var(--muted); font-weight: 300; }
+
+/* ─── SEARCH BAR ─── */
+.search-section {
+  padding: 40px 80px;
+  background: var(--navy3);
+  border-bottom: 0.5px solid var(--border);
+  position: relative;
+  z-index: 1;
+}
+.search-row {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr auto;
+  gap: 12px;
+  align-items: end;
+  max-width: 1100px;
+}
+.search-field label { display: block; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--teal); margin-bottom: 8px; }
+.search-field input, .search-field select { width: 100%; background: rgba(245,247,250,0.05); border: 0.5px solid var(--border); color: var(--white); padding: 12px 16px; font-family: var(--font-body); font-size: 14px; border-radius: 2px; outline: none; transition: border-color 0.2s; }
+.search-field input::placeholder { color: var(--muted); }
+.search-field input:focus, .search-field select:focus { border-color: var(--teal); }
+.search-field select option { background: var(--navy2); }
+.search-btn { background: var(--teal); border: none; color: var(--navy); padding: 12px 28px; font-family: var(--font-body); font-size: 13px; font-weight: 500; letter-spacing: 1px; text-transform: uppercase; cursor: pointer; border-radius: 2px; white-space: nowrap; transition: all 0.2s; }
+.search-btn:hover { background: var(--mint); }
+.search-clear { background: transparent; border: 0.5px solid var(--border); color: var(--muted); padding: 12px 16px; font-family: var(--font-body); font-size: 13px; letter-spacing: 1px; text-transform: uppercase; cursor: pointer; border-radius: 2px; white-space: nowrap; transition: all 0.2s; margin-left: 8px; }
+.search-clear:hover { border-color: var(--teal); color: var(--teal); }
+
+/* ─── LISTINGS SECTION ─── */
+.listings-page-section {
+  padding: 60px 80px 100px;
+  position: relative;
+  z-index: 1;
+}
+
+/* filter bar */
+.filter-bar { display: flex; gap: 8px; margin-bottom: 36px; flex-wrap: wrap; align-items: center; }
+.filter-btn { background: transparent; border: 0.5px solid var(--border); color: var(--muted); padding: 8px 20px; font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; cursor: pointer; border-radius: 2px; font-family: var(--font-body); transition: all 0.2s; }
+.filter-btn:hover, .filter-btn.active { background: rgba(62,207,178,0.1); border-color: var(--teal); color: var(--teal); }
+.filter-count { margin-left: auto; font-size: 12px; color: var(--muted); letter-spacing: 1px; }
+
+/* grid */
+.listings-grid-full {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  margin-bottom: 48px;
+}
+
+/* card */
+.aircraft-card { background: var(--navy2); border: 0.5px solid var(--border); border-radius: 3px; overflow: hidden; transition: all 0.35s cubic-bezier(0.25,0.8,0.25,1); cursor: pointer; position: relative; }
+.aircraft-card:hover { transform: translateY(-4px); border-color: rgba(62,207,178,0.4); box-shadow: 0 24px 60px rgba(0,0,0,0.4), 0 0 40px rgba(62,207,178,0.06); }
+.aircraft-card::after { content: ''; position: absolute; inset: 0; border-radius: 3px; background: linear-gradient(135deg, rgba(62,207,178,0.04) 0%, transparent 60%); opacity: 0; transition: opacity 0.35s; }
+.aircraft-card:hover::after { opacity: 1; }
+.card-img { width: 100%; aspect-ratio: 16/10; overflow: hidden; position: relative; }
+.card-img-inner { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; }
+.aircraft-svg { width: 85%; height: auto; transition: transform 0.5s ease; filter: drop-shadow(0 8px 24px rgba(0,0,0,0.5)); }
+.aircraft-card:hover .aircraft-svg { transform: scale(1.04) translateX(3px); }
+.card-badge { position: absolute; top: 12px; left: 12px; background: var(--teal); color: var(--navy); font-size: 9px; font-weight: 500; letter-spacing: 1.5px; text-transform: uppercase; padding: 4px 10px; border-radius: 1px; }
+.card-badge.featured { background: #e6c97a; color: #1a1200; }
+.bg-slate { background: linear-gradient(160deg, #12203a 0%, #0d1a30 100%); }
+.card-body { padding: 22px 24px 24px; }
+.card-make { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--teal); margin-bottom: 6px; }
+.card-name { font-family: var(--font-display); font-size: 22px; font-weight: 400; margin-bottom: 4px; line-height: 1.2; }
+.card-year { font-size: 13px; color: var(--muted); margin-bottom: 16px; }
+.card-specs { display: flex; gap: 0; border-top: 0.5px solid var(--border); border-bottom: 0.5px solid var(--border); margin-bottom: 18px; }
+.spec { flex: 1; padding: 10px 0; text-align: center; border-right: 0.5px solid var(--border); }
+.spec:last-child { border-right: none; }
+.spec-val { font-family: var(--font-display); font-size: 16px; font-weight: 400; color: var(--white); line-height: 1; }
+.spec-label { font-size: 9px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted); margin-top: 3px; }
+.card-footer { display: flex; align-items: center; justify-content: space-between; }
+.card-price { font-family: var(--font-display); font-size: 24px; font-weight: 300; color: var(--white); }
+.card-price span { font-size: 13px; color: var(--muted); }
+.card-btn { background: transparent; border: 0.5px solid var(--teal); color: var(--teal); padding: 8px 18px; font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; cursor: pointer; border-radius: 2px; font-family: var(--font-body); transition: all 0.2s; text-decoration: none; display: inline-block; }
+.card-btn:hover { background: var(--teal); color: var(--navy); }
+
+/* empty / loading states */
+.state-msg { text-align: center; padding: 100px 0; color: var(--muted); font-size: 14px; letter-spacing: 2px; text-transform: uppercase; }
+.state-msg span { display: block; font-family: var(--font-display); font-size: 32px; font-weight: 300; color: var(--white); letter-spacing: 0; text-transform: none; margin-bottom: 12px; }
+
+/* load more */
+.load-more-wrap { text-align: center; }
+.load-more-btn { background: transparent; border: 0.5px solid var(--border); color: var(--muted); padding: 14px 48px; font-size: 12px; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; border-radius: 2px; font-family: var(--font-body); transition: all 0.2s; }
+.load-more-btn:hover { border-color: var(--teal); color: var(--teal); }
+.load-more-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+
+/* ─── ANIMATIONS ─── */
+@keyframes fadeUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+.fade-up { opacity: 0; animation: fadeUp 0.7s ease both; }
+.delay-1 { animation-delay: 0.05s; }
+.delay-2 { animation-delay: 0.1s; }
+.delay-3 { animation-delay: 0.15s; }
+.delay-4 { animation-delay: 0.2s; }
+.delay-5 { animation-delay: 0.25s; }
+.delay-6 { animation-delay: 0.3s; }
+
+/* ─── SCROLLBAR ─── */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--navy); }
+::-webkit-scrollbar-thumb { background: var(--teal3); border-radius: 3px; }
+
+/* ─── RESPONSIVE ─── */
+@media (max-width: 1024px) {
+  nav { padding: 0 32px; height: 120px; }
+  .logo-img { height: 110px; }
+  .page-hero { padding: 180px 40px 60px; }
+  .search-section { padding: 40px 40px; }
+  .search-row { grid-template-columns: 1fr 1fr; gap: 14px; }
+  .search-btn { grid-column: 1 / -1; width: 100%; padding: 14px; }
+  .listings-page-section { padding: 48px 40px 80px; }
+  .listings-grid-full { grid-template-columns: repeat(2, 1fr); }
+  .footer-top { grid-template-columns: 1fr 1fr; gap: 40px; }
+  footer { padding: 60px 40px 32px; }
+}
+@media (max-width: 768px) {
+  nav { padding: 0 20px; height: 90px; }
+  .logo-img { height: 72px; }
+  .nav-links { display: none; }
+  .hamburger { display: flex; }
+  .page-hero { padding: 130px 24px 48px; }
+  .page-title { font-size: clamp(34px, 9vw, 54px); }
+  .search-section { padding: 32px 20px; }
+  .search-row { grid-template-columns: 1fr; }
+  .search-btn { grid-column: unset; }
+  .listings-page-section { padding: 40px 20px 60px; }
+  .listings-grid-full { grid-template-columns: 1fr; }
+  .filter-count { margin-left: 0; }
+  footer { padding: 60px 20px 32px; }
+  .footer-top { grid-template-columns: 1fr; gap: 36px; }
+  .footer-bottom { flex-direction: column; gap: 16px; text-align: center; }
+}
+@media (max-width: 480px) {
+  nav { height: 80px; padding: 0 16px; }
+  .logo-img { height: 62px; }
+  .page-hero { padding: 110px 16px 40px; }
+  .listings-page-section { padding: 32px 16px 48px; }
+  .search-section { padding: 28px 16px; }
+  footer { padding: 48px 16px 28px; }
+}
+</style>
+</head>
+<body>
+
+<div id="site-header"></div>
+<script>fetch("header.html").then(r=>r.text()).then(h=>{document.getElementById("site-header").outerHTML=h;initMobileMenu();});</script>
+
+<!-- Page Hero -->
+<section class="page-hero">
+  <div class="page-hero-grid"></div>
+  <div class="page-hero-orb"></div>
+  <div style="position:relative;z-index:2;">
+    <div class="page-eyebrow">SkyLife Aircrafts</div>
+    <h1 class="page-title">Available <em>Listings</em></h1>
+    <p class="page-sub" id="hero-count">Browse our full inventory of private aircraft for sale across Canada.</p>
+  </div>
+</section>
+
+<!-- Search Bar -->
+<div class="search-section">
+  <div class="search-row">
+    <div class="search-field">
+      <label>Make / Model</label>
+      <input type="text" id="s-make" placeholder="e.g. Cessna, Piper, Beechcraft">
+    </div>
+    <div class="search-field">
+      <label>Category</label>
+      <select id="s-cat">
+        <option value="">All Types</option>
+        <option value="piston">Piston</option>
+        <option value="turboprop">Turboprop</option>
+        <option value="light_jet">Light Jet</option>
+        <option value="heavy_jet">Heavy Jet</option>
+        <option value="helicopter">Helicopter</option>
+      </select>
+    </div>
+    <div class="search-field">
+      <label>Max Price (CAD)</label>
+      <select id="s-price">
+        <option value="">Any Price</option>
+        <option value="250000">Under $250K</option>
+        <option value="500000">Under $500K</option>
+        <option value="1000000">Under $1M</option>
+        <option value="3000000">Under $3M</option>
+        <option value="10000000">Under $10M</option>
+      </select>
+    </div>
+    <div class="search-field">
+      <label>Location</label>
+      <input type="text" id="s-loc" placeholder="Province or city">
+    </div>
+    <div style="display:flex;gap:8px;align-items:flex-end;">
+      <button class="search-btn" onclick="applySearch()">Search</button>
+      <button class="search-clear" onclick="clearSearch()">Clear</button>
+    </div>
+  </div>
+</div>
+
+<!-- Listings -->
+<section class="listings-page-section">
+  <div class="filter-bar">
+    <button class="filter-btn active" data-cat="">All Aircraft</button>
+    <button class="filter-btn" data-cat="piston">Piston</button>
+    <button class="filter-btn" data-cat="turboprop">Turboprop</button>
+    <button class="filter-btn" data-cat="light_jet">Light Jet</button>
+    <button class="filter-btn" data-cat="heavy_jet">Heavy Jet</button>
+    <button class="filter-btn" data-cat="helicopter">Helicopter</button>
+    <span class="filter-count" id="filter-count"></span>
+  </div>
+
+  <div id="listings-loading" class="state-msg">Loading aircraft&hellip;</div>
+  <div id="listings-empty" class="state-msg" style="display:none;">
+    <span>No aircraft found</span>
+    Try adjusting your filters or <a href="listings.html" style="color:var(--teal)">view all</a>
+  </div>
+  <div class="listings-grid-full" id="listings-grid" style="display:none;"></div>
+
+  <div class="load-more-wrap" id="load-more-wrap" style="display:none;">
+    <button class="load-more-btn" id="load-more-btn" onclick="loadMore()">Load More Aircraft</button>
+  </div>
+</section>
+
+<div id="site-footer"></div>
+<script>fetch("footer.html").then(r=>r.text()).then(h=>{document.getElementById("site-footer").outerHTML=h;});</script>
+
+<!-- Mobile menu overlay -->
+<div class="mobile-overlay" id="mobileOverlay" onclick="closeMobileMenu()"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const { createClient } = supabase;
+const sb = createClient(
+  'https://ogfvvlrplrtwzznwnthg.supabase.co',
+  'sb_publishable_lrJV83xxSkYauYFOHprBsQ_P-VW2DBw'
+);
+
+const svgByCategory = {
+  piston: `<svg class="aircraft-svg" viewBox="0 0 400 180" fill="none" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="pbody" x1="0" y1="0" x2="400" y2="0" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#1a3a5c"/><stop offset="50%" stop-color="#2a5a8c"/><stop offset="100%" stop-color="#1a3a5c"/></linearGradient><linearGradient id="pstripe" x1="0" y1="0" x2="400" y2="0" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#3ecfb2" stop-opacity="0"/><stop offset="30%" stop-color="#3ecfb2"/><stop offset="70%" stop-color="#3ecfb2"/><stop offset="100%" stop-color="#3ecfb2" stop-opacity="0"/></linearGradient></defs><ellipse cx="200" cy="100" rx="160" ry="22" fill="url(#pbody)" opacity="0.9"/><path d="M60 100 Q120 72 200 68 Q280 72 330 95 Q310 88 200 85 Q120 82 70 98Z" fill="#2a5a8c"/><path d="M185 72 Q200 65 215 72 L218 80 Q200 76 182 80Z" fill="#3ecfb2" opacity="0.6"/><path d="M140 102 L80 132 L70 134 L72 128 L135 108Z" fill="#1d4a7a"/><path d="M140 102 L330 108 L335 112 L330 116 L140 110Z" fill="#1d4a7a"/><path d="M140 104 L330 110" stroke="#3ecfb2" stroke-width="1.5" opacity="0.7"/><path d="M58 100 L30 112 L26 113 L28 108 L58 103Z" fill="#1a3a5c"/><path d="M58 100 L95 103 L95 106 L58 105Z" fill="#1a3a5c"/><path d="M58 100 L52 78 L58 82 L62 100Z" fill="#1a3a5c"/><rect x="70" y="97" width="250" height="3" fill="url(#pstripe)" rx="1.5" opacity="0.8"/><ellipse cx="336" cy="102" rx="3" ry="3" fill="#3ecfb2"/><ellipse cx="336" cy="102" rx="2" ry="18" fill="#3ecfb2" opacity="0.35" transform="rotate(30 336 102)"/><ellipse cx="336" cy="102" rx="2" ry="18" fill="#3ecfb2" opacity="0.35" transform="rotate(-30 336 102)"/></svg>`,
+  turboprop: `<svg class="aircraft-svg" viewBox="0 0 420 180" fill="none" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="tbody" x1="0" y1="0" x2="420" y2="0" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#0d2040"/><stop offset="40%" stop-color="#1a3a6a"/><stop offset="100%" stop-color="#0d2040"/></linearGradient></defs><path d="M55 95 Q80 78 200 74 Q300 74 360 88 Q380 92 390 100 Q380 108 360 112 Q300 126 200 126 Q80 122 55 105Z" fill="url(#tbody)"/><path d="M340 80 Q355 76 372 82 L375 90 Q358 86 340 88Z" fill="#3ecfb2" opacity="0.5"/><path d="M340 88 L375 90 L376 95 L340 95Z" fill="#3ecfb2" opacity="0.3"/><path d="M170 100 L60 135 L50 138 L52 131 L168 110Z" fill="#122a50"/><path d="M245 100 L370 118 L375 122 L370 126 L245 108Z" fill="#122a50"/><line x1="170" y1="103" x2="370" y2="112" stroke="#3ecfb2" stroke-width="1.5" opacity="0.5"/><line x1="60" y1="134" x2="168" y2="111" stroke="#3ecfb2" stroke-width="1.5" opacity="0.5"/><ellipse cx="130" cy="128" rx="16" ry="6" fill="#0d2040"/><ellipse cx="300" cy="118" rx="16" ry="6" fill="#0d2040"/><ellipse cx="113" cy="128" rx="3" ry="16" fill="#3ecfb2" opacity="0.25" transform="rotate(30 113 128)"/><ellipse cx="316" cy="118" rx="3" ry="16" fill="#3ecfb2" opacity="0.25" transform="rotate(30 316 118)"/><path d="M56 100 L22 116 L18 118 L20 112 L56 103Z" fill="#0d2040"/><path d="M58 100 L48 72 L56 76 L62 100Z" fill="#0d2040"/><path d="M80 96 Q200 90 360 98" stroke="#3ecfb2" stroke-width="2" fill="none" opacity="0.6"/><rect x="120" y="88" width="14" height="10" rx="3" fill="#3ecfb2" opacity="0.25"/><rect x="150" y="86" width="14" height="10" rx="3" fill="#3ecfb2" opacity="0.25"/><rect x="180" y="84" width="14" height="10" rx="3" fill="#3ecfb2" opacity="0.25"/><rect x="210" y="83" width="14" height="10" rx="3" fill="#3ecfb2" opacity="0.25"/><rect x="240" y="83" width="14" height="10" rx="3" fill="#3ecfb2" opacity="0.25"/></svg>`,
+  light_jet: `<svg class="aircraft-svg" viewBox="0 0 500 180" fill="none" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="jbody" x1="0" y1="0" x2="500" y2="0" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#091525"/><stop offset="30%" stop-color="#152d55"/><stop offset="70%" stop-color="#152d55"/><stop offset="100%" stop-color="#091525"/></linearGradient></defs><path d="M200 104 L80 148 L65 154 L68 144 L198 114Z" fill="#122a50"/><path d="M290 104 L440 138 L448 142 L444 134 L292 112Z" fill="#122a50"/><path d="M58 100 Q90 80 245 76 Q370 76 420 88 Q445 94 455 100 Q445 106 420 112 Q370 124 245 124 Q90 120 58 100Z" fill="url(#jbody)"/><path d="M378 80 Q400 74 425 82 L428 92 L378 90Z" fill="#3ecfb2" opacity="0.4"/><path d="M100 104 Q105 96 125 95 Q145 95 150 103 Q145 112 125 113 Q105 113 100 104Z" fill="#091525"/><path d="M340 104 Q345 96 365 95 Q385 95 390 103 Q385 112 365 113 Q345 113 340 104Z" fill="#091525"/><path d="M100 94 Q245 88 420 96" stroke="#3ecfb2" stroke-width="2.5" fill="none" opacity="0.7"/><path d="M56 100 L22 116 L18 118 L20 112 L56 103Z" fill="#091525"/><path d="M56 100 L86 104 L86 108 L56 105Z" fill="#091525"/><path d="M58 100 L48 72 L56 76 L62 100Z" fill="#091525"/><rect x="150" y="86" width="18" height="12" rx="4" fill="#3ecfb2" opacity="0.22"/><rect x="180" y="84" width="18" height="12" rx="4" fill="#3ecfb2" opacity="0.22"/><rect x="210" y="82" width="18" height="12" rx="4" fill="#3ecfb2" opacity="0.22"/><rect x="240" y="82" width="18" height="12" rx="4" fill="#3ecfb2" opacity="0.22"/><rect x="270" y="82" width="18" height="12" rx="4" fill="#3ecfb2" opacity="0.22"/></svg>`,
+  heavy_jet: `<svg class="aircraft-svg" viewBox="0 0 540 180" fill="none" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="hbody" x1="0" y1="0" x2="540" y2="0" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#060f1e"/><stop offset="30%" stop-color="#102040"/><stop offset="70%" stop-color="#102040"/><stop offset="100%" stop-color="#060f1e"/></linearGradient></defs><path d="M180 106 L50 152 L32 158 L36 146 L178 116Z" fill="#0e1f38"/><path d="M330 106 L490 148 L502 152 L496 140 L332 114Z" fill="#0e1f38"/><path d="M50 100 Q90 76 270 72 Q410 72 470 88 Q500 96 510 104 Q500 112 470 120 Q410 136 270 136 Q90 132 50 104Z" fill="url(#hbody)"/><path d="M420 76 Q448 70 480 80 L484 94 L420 90Z" fill="#3ecfb2" opacity="0.35"/><path d="M88 106 Q94 97 116 96 Q138 96 144 105 Q138 115 116 116 Q94 116 88 106Z" fill="#060f1e"/><path d="M370 106 Q376 97 398 96 Q420 96 426 105 Q420 115 398 116 Q376 116 370 106Z" fill="#060f1e"/><path d="M90 92 Q270 86 470 96" stroke="#3ecfb2" stroke-width="3" fill="none" opacity="0.7"/><path d="M48 102 L14 120 L10 122 L12 114 L48 105Z" fill="#060f1e"/><path d="M48 102 L80 106 L80 112 L48 107Z" fill="#060f1e"/><path d="M50 102 L38 68 L48 74 L54 102Z" fill="#060f1e"/><rect x="140" y="84" width="22" height="14" rx="5" fill="#3ecfb2" opacity="0.2"/><rect x="175" y="82" width="22" height="14" rx="5" fill="#3ecfb2" opacity="0.2"/><rect x="210" y="80" width="22" height="14" rx="5" fill="#3ecfb2" opacity="0.2"/><rect x="245" y="80" width="22" height="14" rx="5" fill="#3ecfb2" opacity="0.2"/><rect x="280" y="80" width="22" height="14" rx="5" fill="#3ecfb2" opacity="0.2"/><rect x="315" y="80" width="22" height="14" rx="5" fill="#3ecfb2" opacity="0.2"/><rect x="350" y="80" width="22" height="14" rx="5" fill="#3ecfb2" opacity="0.2"/></svg>`,
+  helicopter: `<svg class="aircraft-svg" viewBox="0 0 400 180" fill="none" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="hcbody" x1="0" y1="0" x2="400" y2="0" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#0d2040"/><stop offset="50%" stop-color="#1a3a6a"/><stop offset="100%" stop-color="#0d2040"/></linearGradient></defs><ellipse cx="200" cy="105" rx="80" ry="35" fill="url(#hcbody)"/><path d="M120 105 L50 112 L40 115 L42 108 L118 108Z" fill="#0d2040"/><path d="M60 108 L44 100 L52 98 L62 106Z" fill="#0d2040"/><path d="M155 75 Q200 65 245 75 L248 82 Q200 72 152 82Z" fill="#3ecfb2" opacity="0.4"/><line x1="60" y1="72" x2="340" y2="72" stroke="#3ecfb2" stroke-width="3" opacity="0.6" stroke-linecap="round"/><ellipse cx="200" cy="72" rx="8" ry="8" fill="#0d2040"/><ellipse cx="200" cy="72" rx="4" ry="4" fill="#3ecfb2" opacity="0.8"/><line x1="310" y1="102" x2="355" y2="90" stroke="#0d2040" stroke-width="4" stroke-linecap="round"/><line x1="345" y1="82" x2="368" y2="85" stroke="#0d2040" stroke-width="3" stroke-linecap="round"/><rect x="160" y="88" width="20" height="14" rx="4" fill="#3ecfb2" opacity="0.3"/><rect x="192" y="86" width="20" height="14" rx="4" fill="#3ecfb2" opacity="0.3"/><line x1="150" y1="135" x2="145" y2="155" stroke="#0d2040" stroke-width="3"/><line x1="250" y1="135" x2="255" y2="155" stroke="#0d2040" stroke-width="3"/><line x1="130" y1="155" x2="175" y2="155" stroke="#0d2040" stroke-width="3"/><line x1="235" y1="155" x2="275" y2="155" stroke="#0d2040" stroke-width="3"/></svg>`
+};
+
+function formatPrice(p) {
+  if (!p) return 'Price on Request';
+  if (p >= 1000000) return `<span>CAD</span> $${(p/1000000).toFixed(p%1000000===0?0:1)}M`;
+  if (p >= 1000) return `<span>CAD</span> $${(p/1000).toFixed(0)}K`;
+  return `<span>CAD</span> $${p.toLocaleString()}`;
+}
+
+function renderCard(a, delay) {
+  const svg = svgByCategory[a.category] || svgByCategory['piston'];
+  const specs = a.specs || {};
+  const badge = a.featured
+    ? '<span class="card-badge featured">Featured</span>'
+    : '<span class="card-badge">Available</span>';
+  const specHtml = [
+    specs.seats        ? `<div class="spec"><div class="spec-val">${specs.seats}</div><div class="spec-label">Seats</div></div>` : '',
+    specs.cruise_speed ? `<div class="spec"><div class="spec-val">${specs.cruise_speed}</div><div class="spec-label">KTAS</div></div>` : '',
+    specs.range_nm     ? `<div class="spec"><div class="spec-val">${Number(specs.range_nm).toLocaleString()}</div><div class="spec-label">NM Range</div></div>` : '',
+    specs.avionics     ? `<div class="spec"><div class="spec-val" style="font-size:11px">${specs.avionics.split(' ')[0]}</div><div class="spec-label">Avionics</div></div>` : ''
+  ].filter(Boolean).join('');
+  const subtitle = [a.location, a.total_time ? a.total_time.toLocaleString()+' TT' : '', specs.avionics || ''].filter(Boolean).join(' · ');
+
+  return `
+    <div class="aircraft-card fade-up ${delay}" onclick="window.location='listing.html?id=${a.id}'">
+      <div class="card-img bg-slate">
+        ${badge}
+        <div class="card-img-inner">${svg}</div>
+      </div>
+      <div class="card-body">
+        <div class="card-make">${a.make} · ${a.category ? a.category.replace('_',' ') : ''}</div>
+        <div class="card-name">${a.year} ${a.model}</div>
+        <div class="card-year">${subtitle}</div>
+        <div class="card-specs">${specHtml}</div>
+        <div class="card-footer">
+          <div><div class="card-price">${formatPrice(a.price)}</div></div>
+          <a class="card-btn" href="listing.html?id=${a.id}">View Details</a>
+        </div>
+      </div>
+    </div>`;
+}
+
+// ─── STATE ────────────────────────────────────────────────────────────────────
+const PAGE_SIZE = 12;
+let allData = [];
+let filtered = [];
+let shown = 0;
+let activeCategory = '';
+let searchMake = '';
+let searchMaxPrice = '';
+let searchLocation = '';
+
+// ─── FETCH ALL ────────────────────────────────────────────────────────────────
+async function fetchAll() {
+  const { data, error } = await sb
+    .from('listings')
+    .select('*')
+    .eq('status', 'active')
+    .order('featured', { ascending: false })
+    .order('created_at', { ascending: false });
+
+  if (error || !data) return [];
+  return data;
+}
+
+function applyFilters() {
+  filtered = allData.filter(a => {
+    if (activeCategory && a.category !== activeCategory) return false;
+    if (searchMake && !`${a.make} ${a.model}`.toLowerCase().includes(searchMake.toLowerCase())) return false;
+    if (searchMaxPrice && a.price > Number(searchMaxPrice)) return false;
+    if (searchLocation && !(a.location || '').toLowerCase().includes(searchLocation.toLowerCase())) return false;
+    return true;
+  });
+}
+
+function renderPage(reset) {
+  const grid = document.getElementById('listings-grid');
+  const empty = document.getElementById('listings-empty');
+  const wrap = document.getElementById('load-more-wrap');
+  const btn = document.getElementById('load-more-btn');
+  const countEl = document.getElementById('filter-count');
+
+  if (reset) { shown = 0; grid.innerHTML = ''; }
+
+  countEl.textContent = `${filtered.length} aircraft`;
+  document.getElementById('hero-count').textContent =
+    `Showing ${filtered.length} aircraft available across Canada.`;
+
+  if (filtered.length === 0) {
+    grid.style.display = 'none';
+    empty.style.display = 'block';
+    wrap.style.display = 'none';
+    return;
+  }
+
+  empty.style.display = 'none';
+  grid.style.display = 'grid';
+
+  const slice = filtered.slice(shown, shown + PAGE_SIZE);
+  const delays = ['delay-1','delay-2','delay-3','delay-4','delay-5','delay-6'];
+  grid.innerHTML += slice.map((a, i) => renderCard(a, delays[i % delays.length])).join('');
+  shown += slice.length;
+
+  wrap.style.display = shown < filtered.length ? 'block' : 'none';
+  btn.disabled = false;
+}
+
+function loadMore() {
+  document.getElementById('load-more-btn').disabled = true;
+  renderPage(false);
+}
+
+function applySearch() {
+  searchMake = document.getElementById('s-make').value.trim();
+  searchMaxPrice = document.getElementById('s-price').value;
+  searchLocation = document.getElementById('s-loc').value.trim();
+  applyFilters();
+  renderPage(true);
+}
+
+function clearSearch() {
+  document.getElementById('s-make').value = '';
+  document.getElementById('s-price').value = '';
+  document.getElementById('s-loc').value = '';
+  searchMake = ''; searchMaxPrice = ''; searchLocation = '';
+  applyFilters();
+  renderPage(true);
+}
+
+// ─── FILTER PILLS ─────────────────────────────────────────────────────────────
+document.querySelectorAll('.filter-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    activeCategory = btn.dataset.cat;
+    // sync category dropdown
+    document.getElementById('s-cat').value = activeCategory;
+    applyFilters();
+    renderPage(true);
+  });
+});
+
+// ─── SYNC DROPDOWN → PILL ─────────────────────────────────────────────────────
+document.getElementById('s-cat').addEventListener('change', function() {
+  activeCategory = this.value;
+  document.querySelectorAll('.filter-btn').forEach(b => {
+    b.classList.toggle('active', b.dataset.cat === activeCategory);
+  });
+  applyFilters();
+  renderPage(true);
+});
+
+// ─── INIT ─────────────────────────────────────────────────────────────────────
+(async () => {
+  allData = await fetchAll();
+  document.getElementById('listings-loading').style.display = 'none';
+  applyFilters();
+  renderPage(true);
+})();
+
+// ─── MOBILE MENU ─────────────────────────────────────────────────────────────
+function initMobileMenu() {
+  const hamburger = document.querySelector('.hamburger');
+  const mobileMenu = document.querySelector('.mobile-menu');
+  const overlay = document.getElementById('mobileOverlay');
+  if (!hamburger) return;
+  hamburger.addEventListener('click', () => {
+    hamburger.classList.toggle('open');
+    mobileMenu.classList.toggle('open');
+    overlay.classList.toggle('open');
+    document.body.style.overflow = mobileMenu.classList.contains('open') ? 'hidden' : '';
+  });
+}
+function closeMobileMenu() {
+  document.querySelector('.hamburger')?.classList.remove('open');
+  document.querySelector('.mobile-menu')?.classList.remove('open');
+  document.getElementById('mobileOverlay')?.classList.remove('open');
+  document.body.style.overflow = '';
+}
+</script>
+</body>
+</html>
