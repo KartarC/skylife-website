@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>SkyLife Aircrafts — Buy & Sell Private Aircraft</title>
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
 :root {
@@ -1128,9 +1129,23 @@ footer {
     Loading Aircraft...
   </div>
 
-  <!-- Dynamic listings container -->
-  <div id="listings-top" class="listings-grid" style="display:none"></div>
-  <div id="listings-bot" class="listings-grid-bot" style="display:none"></div>
+  <!-- Featured listings -->
+  <div id="featured-label" style="display:none;margin-bottom:16px">
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:20px">
+      <span style="font-size:10px;letter-spacing:3px;text-transform:uppercase;color:#e6c97a">&#9733; Featured</span>
+      <div style="flex:1;height:0.5px;background:rgba(230,201,122,0.25)"></div>
+    </div>
+  </div>
+  <div id="listings-featured" class="listings-grid" style="display:none;margin-bottom:40px"></div>
+
+  <!-- All other listings -->
+  <div id="available-label" style="display:none;margin-bottom:16px">
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:20px">
+      <span style="font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--teal)">Also Available</span>
+      <div style="flex:1;height:0.5px;background:var(--border)"></div>
+    </div>
+  </div>
+  <div id="listings-all" class="listings-grid" style="display:none"></div>
 
   <!-- No listings fallback -->
   <div id="listings-empty" style="display:none;text-align:center;padding:80px 0;">
@@ -1314,30 +1329,48 @@ async function loadListings() {
       .select('*')
       .eq('status', 'active')
       .order('featured', { ascending: false })
-      .limit(10);
+      .order('created_at', { ascending: false })
+      .limit(12);
 
     document.getElementById('listings-loading').style.display = 'none';
 
-    if (error || !data || data.length === 0) {
+    if (error) {
+      console.error('Supabase error:', error.message, error.details, error.hint);
       document.getElementById('listings-empty').style.display = 'block';
       return;
     }
 
-    const top = data.slice(0, 3);
-    const bot = data.slice(3, 5);
-
-    const topEl = document.getElementById('listings-top');
-    const botEl = document.getElementById('listings-bot');
-
-    topEl.innerHTML = top.map((a, i) => renderCard(a, ['delay-1','delay-2','delay-3'][i] || '')).join('');
-    topEl.style.display = 'grid';
-
-    if (bot.length > 0) {
-      const tallCard = renderCard(bot[0], 'tall delay-2');
-      const wideCard = bot[1] ? renderCard(bot[1], 'wide delay-3') : '';
-      botEl.innerHTML = tallCard + wideCard;
-      botEl.style.display = 'grid';
+    if (!data || data.length === 0) {
+      document.getElementById('listings-empty').style.display = 'block';
+      return;
     }
+
+    const featured = data.filter(a => a.featured);
+    const regular  = data.filter(a => !a.featured);
+
+    // ── Featured section ──
+    if (featured.length > 0) {
+      document.getElementById('featured-label').style.display = 'block';
+      const el = document.getElementById('listings-featured');
+      el.innerHTML = featured.map((a, i) => renderCard(a, ['delay-1','delay-2','delay-3'][i % 3])).join('');
+      el.style.display = 'grid';
+    }
+
+    // ── All other listings ──
+    if (regular.length > 0) {
+      if (featured.length > 0) {
+        document.getElementById('available-label').style.display = 'block';
+      }
+      const el = document.getElementById('listings-all');
+      el.innerHTML = regular.map((a, i) => renderCard(a, ['delay-1','delay-2','delay-3'][i % 3])).join('');
+      el.style.display = 'grid';
+    }
+
+    // If ONLY featured listings exist, no "Also Available" label
+    if (featured.length > 0 && regular.length === 0) {
+      document.getElementById('available-label').style.display = 'none';
+    }
+
   } catch (e) {
     console.error('Listings load error:', e);
     document.getElementById('listings-loading').style.display = 'none';
