@@ -1,4 +1,4 @@
-# SkyLife Aircrafts — Claude Code Instructions
+﻿# SkyLife Aircrafts — Claude Code Instructions
 
 ## About This Repo
 Public website for **SkyLife Aircrafts**, a private aircraft brokerage based in Willowdale, Ontario, Canada.
@@ -11,8 +11,8 @@ Owner is 18 years old, building from $0. Long-term vision: scale into airlines /
 - **CRM**: Lovable (private) — connected to same Supabase project
 
 ## Supabase Credentials
-- **Project URL**: `https://ogfvvlrplrtwzznwnthg.supabase.co`
-- **Publishable Key**: `sb_publishable_lrJV83xxSkYauYFOHprBsQ_P-VW2DBw`
+- **Project URL**: `https://qwybhopcinfbostwnfvm.supabase.co`
+- **Publishable Key**: `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InF3eWJob3BjaW5mYm9zdHduZnZtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg2MDcxNTcsImV4cCI6MjA5NDE4MzE1N30.DN-kzSn2SklW6pMhIQzMKjiD9zpwhg6bESFq3eFrz8s`
 
 ## Brand
 - **Primary**: `#0a1628` (Dark Navy)
