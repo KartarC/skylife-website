@@ -322,8 +322,8 @@ section{position:relative;z-index:1}
         </div>
         <div class="form-field"><label>Message</label><textarea id="b-message" placeholder="Tell us what you're looking for — make, model, year range, use case…"></textarea></div>
         <button type="submit" class="form-submit" id="buy-submit">Send Inquiry</button>
-        <div class="form-success" id="buy-success">Thank you — a broker will be in touch within one business day.</div>
       </form>
+      <div id="buy-success-screen" style="display:none;text-align:center;padding:48px 20px"><svg width="60" height="60" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin:0 auto 20px;display:block"><circle cx="30" cy="30" r="26" stroke="#3ecfb2" stroke-width="2"/><path d="M19 30l9 9 13-17" stroke="#3ecfb2" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg><h3 style="font-family:var(--font-display);font-size:30px;font-weight:300;color:var(--white);margin-bottom:10px">Inquiry Sent!</h3><p style="color:var(--muted);margin-bottom:6px">A broker will be in touch within one business day.</p><p style="color:var(--teal);font-size:13px;letter-spacing:1px">Form resets in <span id="buy-countdown">6</span>s</p></div>
     </div>
   </div>
 </section>
@@ -381,7 +381,8 @@ async function submitBuyForm(e){
   }]);
   if(error){btn.disabled=false;btn.textContent='Send Inquiry';alert('Something went wrong. Please try again.');return;}
   document.getElementById('buy-form').style.display='none';
-  document.getElementById('buy-success').style.display='block';
+  document.getElementById('buy-success-screen').style.display='block';
+  let t=6;const iv=setInterval(()=>{t--;document.getElementById('buy-countdown').textContent=t;if(t<=0){clearInterval(iv);document.getElementById('buy-form').reset();document.getElementById('buy-form').style.display='';document.getElementById('buy-success-screen').style.display='none';btn.disabled=false;btn.textContent='Send Inquiry';}},1000);
 }
 
 function initMobileMenu(){
