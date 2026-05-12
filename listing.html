@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Aircraft Detail — SkyLife Aircrafts</title>
 <meta name="description" content="View full details, specs, and pricing for this aircraft listing at SkyLife Aircrafts.">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
 :root {
@@ -466,6 +467,7 @@ function renderPage(a) {
     <div class="detail-section fade-up delay-3">
       <div class="section-eyebrow">Specifications</div>
       <div class="specs-grid">${specsHtml}</div>
+      ${a.description ? `<div style="margin-top:32px"><div class="section-eyebrow">About This Aircraft</div><p style="color:var(--muted);line-height:1.85;font-size:15px;max-width:800px">${a.description}</p></div>` : ''}
     </div>
 
     <div class="divider"></div>
@@ -509,10 +511,13 @@ function renderPage(a) {
             <textarea id="f-message" placeholder="Questions about this aircraft, preferred viewing times, financing needs…"></textarea>
           </div>
           <button type="submit" class="form-submit" id="submit-btn">Send Inquiry</button>
-          <div class="form-success" id="form-success">
-            Thank you — your inquiry has been received. A broker will contact you shortly.
-          </div>
         </form>
+        <div id="inq-success-screen" style="display:none;text-align:center;padding:48px 20px">
+          <svg width="60" height="60" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin:0 auto 20px;display:block"><circle cx="30" cy="30" r="26" stroke="#3ecfb2" stroke-width="2"/><path d="M19 30l9 9 13-17" stroke="#3ecfb2" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <h3 style="font-family:var(--font-display);font-size:30px;font-weight:300;color:var(--white);margin-bottom:10px">Inquiry Sent!</h3>
+          <p style="color:var(--muted);margin-bottom:6px">A broker will be in touch within one business day.</p>
+          <p style="color:var(--teal);font-size:13px;letter-spacing:1px">Form resets in <span id="inq-countdown">6</span>s</p>
+        </div>
       </div>
     </div>
   `;
@@ -546,7 +551,20 @@ async function submitInquiry(e) {
   }
 
   document.getElementById('inquiry-form').style.display = 'none';
-  document.getElementById('form-success').style.display = 'block';
+  document.getElementById('inq-success-screen').style.display = 'block';
+  let t = 6;
+  const iv = setInterval(() => {
+    t--;
+    document.getElementById('inq-countdown').textContent = t;
+    if (t <= 0) {
+      clearInterval(iv);
+      document.getElementById('inquiry-form').reset();
+      document.getElementById('inquiry-form').style.display = '';
+      document.getElementById('inq-success-screen').style.display = 'none';
+      btn.disabled = false;
+      btn.textContent = 'Send Inquiry';
+    }
+  }, 1000);
 }
 
 // ─── LOAD LISTING ─────────────────────────────────────────────────────────────
@@ -564,9 +582,15 @@ async function submitInquiry(e) {
     .from('listings')
     .select('*')
     .eq('id', id)
-    .single();
+    .maybeSingle();
 
-  if (error || !data) {
+  if (error) {
+    console.error('Supabase error:', error.message, error.hint);
+    content.innerHTML = `<div class="not-found"><h2>Could not load listing</h2><p style="color:var(--muted);margin-bottom:8px">Error: ${error.message}</p><p><a href="/listings" style="color:var(--teal)">Browse all listings →</a></p></div>`;
+    return;
+  }
+
+  if (!data) {
     content.innerHTML = `<div class="not-found"><h2>Listing not found</h2><p>This aircraft may have been sold or removed. <a href="/listings" style="color:var(--teal)">Browse all listings →</a></p></div>`;
     return;
   }
